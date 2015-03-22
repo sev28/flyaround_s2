@@ -1,7 +1,7 @@
 .PHONY: test
 
 test:
-	rm -rf app/cache/test/*
+	php app/console cache:clear --env=test
 	bin/phpunit -c app src
 
 install:
@@ -17,3 +17,23 @@ install:
 	php app/console cache:clear --env=test
 	php app/console cache:clear --env=prod
 	bin/phpunit -c app src
+
+chmod:
+	HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d ' ' -f1`
+	sudo setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
+	sudo setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
+
+cleandb:
+	php app/console doctrine:schema:drop --force
+	php app/console doctrine:schema:update --force
+	yes y | php app/console doctrine:fixtures:load
+
+deploy:
+	git fetch --all
+	git reset --hard origin/master
+	../composer.phar self-update
+	../composer.phar update
+	php app/console doctrine:schema:update --force
+	yes y | php app/console doctrine:fixtures:load
+	php app/console cache:clear --env=test
+	phpunit -c app

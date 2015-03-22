@@ -1,5 +1,0 @@
-# src/Flyaround/MapBundle/Resources/config/validation.yml
-Flyaround\MapBundle\Entity\Fly:
-    properties:
-        file:
-            - Image: ~

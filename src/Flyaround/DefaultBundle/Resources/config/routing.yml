@@ -1,0 +1,9 @@
+flyaround_default_terrain:
+    resource: "@FlyaroundDefaultBundle/Controller/TerrainController.php"
+    type:     rest
+    prefix: api
+
+flyaround_default_fly:
+    resource: "@FlyaroundDefaultBundle/Controller/FlyController.php"
+    type:     rest
+    prefix: api

@@ -1,0 +1,16 @@
+parameters:
+#    flyaround_default.example.class: Flyaround\MapBundle\Example
+
+services:
+    flyaround.default.admin.terrain:
+        class: Flyaround\DefaultBundle\Admin\TerrainAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: places, label: Terrains }
+        arguments: [null, Flyaround\DefaultBundle\Entity\Terrain, FlyaroundDefaultBundle:TerrainAdmin]
+
+    flyaround.default.admin.fly:
+            class: Flyaround\DefaultBundle\Admin\FlyAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: places, label: Flys }
+            arguments: [null, Flyaround\DefaultBundle\Entity\Fly, FlyaroundDefaultBundle:FlyAdmin]
+

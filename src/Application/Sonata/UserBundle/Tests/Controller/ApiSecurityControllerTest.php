@@ -31,8 +31,8 @@ class ApiSecurityControllerTest extends WebTestCase
     public function testLoginFailure()
     {
         $this->loadFixtures(array(
-            'Flyaround\MapBundle\DataFixtures\ORM\LoadGroupData',
-            'Flyaround\MapBundle\DataFixtures\ORM\LoadUserData'
+            'Flyaround\DefaultBundle\DataFixtures\ORM\LoadGroupData',
+            'Flyaround\DefaultBundle\DataFixtures\ORM\LoadUserData'
         ));
 
         $data = array(

@@ -1,12 +1,6 @@
 flyaround_map:
-    resource: "@FlyaroundMapBundle/Resources/config/routing.yml"
+    resource: "@FlyaroundDefaultBundle/Resources/config/routing.yml"
     prefix:   /
-
-flyaround_core:
-    resource: "@FlyaroundCoreBundle/Resources/config/routing.yml"
-    prefix:   /terrain
-
-
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
@@ -40,13 +34,9 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 
-homepage:
-    pattern:  /
-    defaults: { _controller: FlyaroundCoreBundle:Default:index }
-
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
+    prefix:   /
 
 ApplicationSonataUserBundle:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing.yml"

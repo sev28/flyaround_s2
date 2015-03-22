@@ -1,0 +1,6 @@
+# src/Flyaround/DefaultBundle/Resources/config/validation.yml
+
+Flyaround\DefaultBundle\Entity\Fly:
+    properties:
+        file:
+            - Image: ~

@@ -1,0 +1,7 @@
+terrain:
+    path:     /
+    defaults: { _controller: "FlyaroundDefaultBundle:Terrain:getTerrains", _format: 'html' }
+
+terrain_show:
+    path:     /{id}/show.{_format}
+    defaults: { _controller: "FlyaroundDefaultBundle:Terrain:getTerrain", _format: 'html' }
