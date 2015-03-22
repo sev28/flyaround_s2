@@ -32,7 +32,7 @@ class WebTestCase extends LiipWebTestCase
      *
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function createAuthenticatedClient($username = 'tom', $password = 'azerty')
+    protected function createAuthenticatedClient($username = 'user', $password = 'password')
     {
         $client = static::createClient();
         $client->request(
@@ -70,5 +70,16 @@ class WebTestCase extends LiipWebTestCase
                 'is response valid json: [' . $response->getContent() . ']'
             );
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getUsers()
+    {
+        return array(
+            array('user'),
+            array('admin'),
+        );
     }
 }

@@ -50,8 +50,8 @@ class ApiSecurityControllerTest extends WebTestCase
     public function testLoginSuccess()
     {
         $data = array(
-            'username' => 'tom',
-            'password' => 'azerty',
+            'username' => 'user',
+            'password' => 'password',
         );
 
         $this->client->request('POST', $this->getUrl('api_login_check'), $data);

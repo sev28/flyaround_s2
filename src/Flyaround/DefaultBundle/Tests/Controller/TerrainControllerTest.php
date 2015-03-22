@@ -3,56 +3,61 @@
 
 namespace Flyaround\DefaultBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Application\Sonata\UserBundle\Tests\WebTestCase;
+
 
 class TerrainControllerTest extends WebTestCase
 {
 
     /**
+     * @param array $user
      *
+     * @dataProvider getUsers
      */
-    public function testCompleteScenario()
+    public function testGetTerrains($user)
     {
-        // Create a new client to browse the application
-        $client = static::createClient();
-
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/terrain/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /terrain/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'flyaround_defaultbundle_terrain[field_name]'  => 'Test',
-            // ... other fields to fill
+        $this->loadFixtures(array(
+            'Flyaround\DefaultBundle\DataFixtures\ORM\LoadGroupData',
+            'Flyaround\DefaultBundle\DataFixtures\ORM\LoadUserData',
+            'Flyaround\DefaultBundle\DataFixtures\ORM\LoadTerrainData'
         ));
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $client = $this->createAuthenticatedClient($user);
+        $client->request('GET', $this->getUrl('get_terrains'));
 
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
+        $response = $client->getResponse();
+        $this->assertJsonResponse($response, 200);
 
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
+        $content = json_decode($response->getContent(), true);
+        $this->assertInternalType('array', $content);
+        $this->assertCount(242, $content);
 
-        $form = $crawler->selectButton('Update')->form(array(
-            'flyaround_defaultbundle_terrain[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        $terrain = $content[0];
+        $this->assertArrayHasKey('id', $terrain);
+        $this->assertArrayHasKey('name', $terrain);
+        $this->assertArrayHasKey('latitude', $terrain);
+        $this->assertArrayHasKey('longitude', $terrain);
     }
 
+    /**
+     * @param array $user
+     *
+     * @dataProvider getUsers
+     */
+    public function testGetTerrain($user)
+    {
+        $client = $this->createAuthenticatedClient($user);
+        $client->request('GET', $this->getUrl('get_terrain', array('id' => 1)));
+
+        $response = $client->getResponse();
+        $this->assertJsonResponse($response, 200);
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertInternalType('array', $content);
+
+        $this->assertArrayHasKey('id', $content);
+        $this->assertArrayHasKey('name', $content);
+        $this->assertArrayHasKey('latitude', $content);
+        $this->assertArrayHasKey('longitude', $content);
+    }
 }

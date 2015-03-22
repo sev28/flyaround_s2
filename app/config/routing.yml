@@ -42,7 +42,3 @@ ApplicationSonataUserBundle:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing.yml"
     prefix:   /
 
-sonata_api_user:
-    type:         rest
-    prefix:       /api/user
-    resource:     "@SonataUserBundle/Resources/config/routing/api.xml"

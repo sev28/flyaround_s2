@@ -3,6 +3,8 @@
 
 namespace Flyaround\DefaultBundle\Controller;
 
+use Flyaround\DefaultBundle\Entity\Fly;
+use Flyaround\DefaultBundle\Form\Type\FlyType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,11 +13,10 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations;
-use Flyaround\MapBundle\Entity\Fly;
 use FOS\RestBundle\Util\Codes;
-use Flyaround\MapBundle\Form\Type\FlyType;
 use FOS\RestBundle\View\RouteRedirectView;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Fly controller.
@@ -34,6 +35,8 @@ class FlyController extends FOSRestController
 
     /**
      * List all flies.
+     *
+     * @throws AccessDeniedException
      *
      * @ApiDoc(
      *   resource = true,
@@ -61,6 +64,8 @@ class FlyController extends FOSRestController
     /**
      * Get a single fly.
      *
+     * @throws AccessDeniedException
+     *
      * @ApiDoc(
      *   output = "Flyaround\DefaultBundle\Entity\Fly",
      *   statusCodes = {
@@ -80,19 +85,25 @@ class FlyController extends FOSRestController
      */
     public function getFlyAction(Request $request, $id)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException();
+        }
+
         $entity = $this->getFlyRepository()->find($id);
         if (false === $entity) {
             throw $this->createNotFoundException("Fly does not exist.");
         }
         $view = new View($entity);
         $view->setHeader('Access-Control-Allow-Origin', '*');
-        $group = $this->container->get('security.context')->isGranted('ROLE_API') ? 'restapi' : 'standard';
+        $group = $this->container->get('security.authorization_checker')->isGranted('ROLE_API') ? 'restapi' : 'standard';
         $view->getSerializationContext()->setGroups(array('Default', $group));
         return $view;
     }
 
     /**
      * Presents the form to use to create a new fly.
+     *
+     * @throws AccessDeniedException
      *
      * @ApiDoc(
      *   resource = true,
@@ -113,6 +124,8 @@ class FlyController extends FOSRestController
     /**
      * Creates a new fly from the submitted data.
      *
+     * @throws AccessDeniedException
+     *
      * @ApiDoc(
      *   resource = true,
      *   input = "Flyaround\DefaultBundle\Form\Type\FlyType",
@@ -131,7 +144,7 @@ class FlyController extends FOSRestController
      *
      * @return FormTypeInterface|RouteRedirectView
      */
-    public function postFliesAction(Request $request)
+    public function postFlyAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $fly = new Fly();
@@ -140,7 +153,7 @@ class FlyController extends FOSRestController
         if ($form->isValid()) {
             $em->persist($fly);
             $em->flush();
-            return new Response('{"id": '.$fly->getId().'}', 200, array('Access-Control-Allow-Origin' => '*'));
+            return new Response('{"id": '.$fly->getId().'}', 201, array('Access-Control-Allow-Origin' => '*'));
         }
         $view = new View(array('form' => $form));
         $view->setHeader('Access-Control-Allow-Origin', '*');
@@ -151,6 +164,8 @@ class FlyController extends FOSRestController
 
     /**
      * Presents the form to use to update an existing fly.
+     *
+     * @throws AccessDeniedException
      *
      * @ApiDoc(
      *   resource = true,
@@ -171,6 +186,10 @@ class FlyController extends FOSRestController
      */
     public function editFliesAction(Request $request, $id)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException();
+        }
+
         $fly = $this->getFlyRepository()->find($id);
         if (false === $fly) {
             throw $this->createNotFoundException("Fly does not exist.");
@@ -184,6 +203,8 @@ class FlyController extends FOSRestController
 
     /**
      * Update existing fly from the submitted data or create a new fly at a specific location.
+     *
+     * @throws AccessDeniedException
      *
      * @ApiDoc(
      *   resource = true,
@@ -209,6 +230,10 @@ class FlyController extends FOSRestController
      */
     public function putFliesAction(Request $request, $id)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException();
+        }
+
         $em = $this->getDoctrine()->getManager();
         $fly = $this->getFlyRepository()->find($id);
         if (false === $fly) {
@@ -230,6 +255,8 @@ class FlyController extends FOSRestController
     /**
      * Removes a fly.
      *
+     * @throws AccessDeniedException
+     *
      * @ApiDoc(
      *   resource = true,
      *   statusCodes={
@@ -244,6 +271,10 @@ class FlyController extends FOSRestController
      */
     public function deleteFliesAction(Request $request, $id)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException();
+        }
+
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('FlyaroundDefaultBundle:Fly')->find($id);
         if (!$entity) {

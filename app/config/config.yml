@@ -10,7 +10,7 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
-    csrf_protection: ~
+    csrf_protection: false
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -75,7 +75,7 @@ fos_user:
     user_class: Application\Sonata\UserBundle\Entity\User
 
     group:
-            group_class: Application\Sonata\UserBundle\Entity\Group
+        group_class: Application\Sonata\UserBundle\Entity\Group
 
 sonata_block:
     default_contexts: [cms]
@@ -111,6 +111,20 @@ sonata_admin:
         blocks:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
+        groups:
+            sonata.admin.group.users:
+                label:           sonata_administration
+                label_catalogue: SonataAdminBundle
+                icon:            '<i class="fa fa-cogs fa-fw"></i>'
+                items:
+                    - sonata.user.admin.user
+                    - sonata.user.admin.group
+            sonata.admin.group.places:
+                label:           Places
+                icon:            '<i class="fa fa-pencil-square fa-fw"></i>'
+                items:
+                    - flyaround.default.admin.terrain
+                    - flyaround.default.admin.fly
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
