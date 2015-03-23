@@ -41,4 +41,3 @@ NelmioApiDocBundle:
 ApplicationSonataUserBundle:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing.yml"
     prefix:   /
-

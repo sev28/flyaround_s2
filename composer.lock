@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "643c4b4f7b0272bbdd1b11e380b2f951",
+    "hash": "e75c62a343b1da6f678053f61dd3979a",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -358,12 +358,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/data-fixtures.git",
-                "reference": "601f006cc62d56f9236a7138268ff4a38b04a8de"
+                "reference": "fbd7ef99a5efb7cf5da1aad760011c31b52a5856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/601f006cc62d56f9236a7138268ff4a38b04a8de",
-                "reference": "601f006cc62d56f9236a7138268ff4a38b04a8de",
+                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/fbd7ef99a5efb7cf5da1aad760011c31b52a5856",
+                "reference": "fbd7ef99a5efb7cf5da1aad760011c31b52a5856",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2015-03-21 17:26:30"
+            "time": "2015-03-23 02:55:17"
         },
         {
             "name": "doctrine/dbal",

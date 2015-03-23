@@ -14,7 +14,7 @@
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2",
         "doctrine/doctrine-fixtures-bundle": "2.2.*@dev",
-        "doctrine/data-fixtures": "@dev",
+        "doctrine/data-fixtures": "1.0.*@dev",
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
@@ -41,6 +41,12 @@
         "phpunit/phpunit": "4.4.*"
     },
     "scripts": {
+        "pre-install-cmd": [
+            "Flyaround\\DefaultBundle\\ScriptHandler::jwtInstall"
+        ],
+        "pre-update-cmd": [
+            "Flyaround\\DefaultBundle\\ScriptHandler::jwtInstall"
+        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
